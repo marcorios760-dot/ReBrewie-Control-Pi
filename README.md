@@ -33,7 +33,7 @@ chmod +x install.sh
 Then open a browser on any device on the same network:
 
 ```
-http://<192.168.1.113>:8080
+http://<192.168.1.XXX>:8080 (Pi IP)
 ```
 
 The app binds to `0.0.0.0` so any LAN device can reach it.
@@ -48,7 +48,7 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 cp .env.example .env
 # Edit .env, then:
-.venv/bin/uvicorn app.main:app --host 192.168.1.132 --port 22
+.venv/bin/uvicorn app.main:app --host 192.168.1.XXX --port 22 (Brewie IP)
 ```
 
 ---
@@ -74,12 +74,12 @@ devices:
 | Variable | Default | Description |
 |---|---|---|
 | `BREWIE_TRANSPORT` | `tcp` | `mock` · `tcp` · `serial` · `http` |
-| `BREWIE_HOST` | `192.168.1.132` | Machine IP (TCP transport) |
+| `BREWIE_HOST` | `192.168.1.XXX` | Machine IP (TCP transport) |
 | `BREWIE_PORT` | `22` | TCP port |
-| `BREWIE_HTTP_BASE` | `http://192.168.1.113:8080` | HTTP bridge base URL |
+| `BREWIE_HTTP_BASE` | `http://192.168.1.XXX:8080` | HTTP bridge base URL | * Pi IP
 | `BREWIE_SERIAL_PORT` | `/dev/ttyUSB0` | Serial device node |
 | `BREWIE_SERIAL_BAUD` | `115200` | Baud rate |
-| `LOCAL_BIND` | `192.168.1.113` | Bind address for the web server |
+| `LOCAL_BIND` | `192.168.1.XXX` | Bind address for the web server |
 | `LOCAL_PORT` | `8080` | Port for the web server |
 | `RECIPE_DIR` | `recipes` | Directory to store recipe JSON files |
 | `TO_LITER` | `20.0` | Batch volume (sent in P80 init) |
