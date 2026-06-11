@@ -1,6 +1,6 @@
 # ReBrewie Control Pi
 
-**A Raspberry Pi 4B local-only web controller for Brewie+ / ReBrewie machines.**
+**A Raspberry Pi (tested on RPi Zero W - with 512 MB of RAM) local-only web controller for Brewie+ / ReBrewie machines.**
 
 This project is a clean-room, Pi-native replacement for the original Brewie Control Android APK. It keeps the original app concepts — connect on the same Wi-Fi/LAN, monitor brew state, start/pause/resume/stop, manage recipes, and view live progress — while adding modern transport flexibility and a developer mode for direct command injection.
 *I have no programming experience and have taken this project on to learn as I go, so please forgive all of my coding errors. Original source code files and examples borrowed from the ReBrewie project, Facebook Brewie Owners Group, https://think.gusius.com, and multiple others that deserve all the credit for compiling and updating the original code to improve and keep our Brewie machines going. This project is being published as a proof of concept and is shared in hopes somebody more experienced can find something useful to inspire further developement.
