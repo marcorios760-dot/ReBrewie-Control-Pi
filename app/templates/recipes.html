@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Recipes – ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Recipes</h1>
+  <a href="/recipes/new" class="btn btn-start">+ New Recipe</a>
+</div>
+
+{% if recipes %}
+<div class="recipe-list">
+  {% for r in recipes %}
+  <div class="recipe-card">
+    <div class="recipe-info">
+      <div class="recipe-name">{{ r.name }}</div>
+      <div class="recipe-meta">
+        {% if r.style %}{{ r.style }} · {% endif %}
+        {{ r.batch_volume_l }}L · {{ r.steps|length }} step(s)
+        {% if r.author %} · {{ r.author }}{% endif %}
+      </div>
+      {% if r.notes %}<div class="recipe-notes">{{ r.notes[:120] }}{{ '…' if r.notes|length > 120 }}</div>{% endif %}
+    </div>
+    <div class="recipe-actions">
+      <button class="btn btn-start btn-sm" onclick="startRecipe('{{ r.id }}')">▶ Brew</button>
+      <a href="/recipes/{{ r.id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+      <button class="btn btn-stop btn-sm" onclick="deleteRecipe('{{ r.id }}', this)">Delete</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <p>No recipes yet.</p>
+  <a href="/recipes/new" class="btn btn-start">Create your first recipe</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function startRecipe(id) {
+  if (!confirm('Start brewing with this recipe?')) return;
+  const r = await fetch('/api/control/start', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({recipe_id: id})
+  });
+  if (r.ok) { window.location.href = '/progress'; }
+  else { const e = await r.json(); alert('Error: ' + (e.detail || JSON.stringify(e))); }
+}
+
+async function deleteRecipe(id, btn) {
+  if (!confirm('Delete this recipe? This cannot be undone.')) return;
+  const r = await fetch('/api/recipes/' + id, {method: 'DELETE'});
+  if (r.ok) { btn.closest('.recipe-card').remove(); }
+  else { alert('Delete failed'); }
+}
+</script>
+{% endblock %}
