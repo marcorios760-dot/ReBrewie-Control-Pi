@@ -1,0 +1,63 @@
+{
+    "IBU": 0,
+    "batchSize": 19.619998931884766,
+    "delayedHoppingTime": 0,
+    "efficiency": 0.69999998807907104,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 4
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 15
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ],
+        [
+            {
+                "time": 5
+            }
+        ]
+    ],
+    "id": "8ead0d1836534e59a668e1c692f62337",
+    "mash": {
+        "mashInTemperature": 54,
+        "mashInWater": 17.799999237060547,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 40
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 50
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 10
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 8
+    },
+    "name": "Amaropod",
+    "path": "/usr/share/brewie/recipes/8ead0d1836534e59a668e1c692f62337"
+}

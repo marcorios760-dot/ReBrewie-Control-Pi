@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv/
+logs/
+docs/debug-sessions/
+*.log
+*.err
+*.out
+.DS_Store

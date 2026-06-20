@@ -1,0 +1,72 @@
+{
+    "IBU": 0,
+    "batchSize": 18.899999828338625,
+    "coolingTemperature": 21,
+    "delayedHoppingTime": 10,
+    "efficiency": 0.55000000000000004,
+    "estColor": 0.56105123283626157,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 6.3000001907348633
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 50
+            }
+        ],
+        [
+            {
+                "time": 25
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "bcf887a449a64f38a62256bea5aed086",
+    "mash": {
+        "mashInTemperature": 42,
+        "mashInWater": 15.300000000000001,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 42,
+                    "stepTime": 20
+                },
+                {
+                    "stepTemp": 52,
+                    "stepTime": 20
+                },
+                {
+                    "stepTemp": 62,
+                    "stepTime": 40
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 10
+                },
+                {
+                    "stepTemp": 78,
+                    "stepTime": 1
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 12
+    },
+    "name": "Call Me Grainy",
+    "path": "/usr/share/brewie/recipes/Call Me Grainy"
+}

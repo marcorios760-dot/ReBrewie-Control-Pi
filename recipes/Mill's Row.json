@@ -1,0 +1,60 @@
+{
+    "IBU": 0,
+    "batchSize": 19.799999237060547,
+    "coolingTemperature": 20,
+    "delayedHoppingTime": 0,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "97964011e4a0434c8a3e5c84b00e493b",
+    "mash": {
+        "mashInTemperature": 54,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 54,
+                    "stepTime": 10
+                },
+                {
+                    "stepTemp": 69,
+                    "stepTime": 80
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 10
+    },
+    "name": "Mill's Row",
+    "path": "/usr/share/brewie/recipes/97964011e4a0434c8a3e5c84b00e493b"
+}

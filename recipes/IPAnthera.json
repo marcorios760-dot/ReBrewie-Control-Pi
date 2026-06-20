@@ -1,0 +1,63 @@
+{
+    "IBU": 0,
+    "batchSize": 20.160001754760742,
+    "delayedHoppingTime": 30,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5.1999998092651367
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 15
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ],
+        [
+            {
+                "time": 5
+            }
+        ]
+    ],
+    "id": "2041865ab032481e9d0c2d2f5cce6105",
+    "mash": {
+        "mashInTemperature": 53,
+        "mashInWater": 16.100000381469727,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 40
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 60
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 20
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 25,
+        "spargingWater": 11.5
+    },
+    "name": "IPAnthera",
+    "path": "/usr/share/brewie/recipes/2041865ab032481e9d0c2d2f5cce6105"
+}

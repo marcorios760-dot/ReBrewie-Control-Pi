@@ -1,0 +1,64 @@
+{
+    "IBU": 0,
+    "batchSize": 19.530000686645508,
+    "coolingTemperature": 22,
+    "delayedHoppingTime": 30,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5.8000001907348633
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 50
+            }
+        ],
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "23ef27f0d034466ca2a7e9eefe16a83c",
+    "mash": {
+        "mashInTemperature": 62,
+        "mashInWater": 16,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 20
+                },
+                {
+                    "stepTemp": 69,
+                    "stepTime": 70
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 10
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 11.5
+    },
+    "name": "Tales From The Cellar",
+    "path": "/usr/share/brewie/recipes/23ef27f0d034466ca2a7e9eefe16a83c"
+}

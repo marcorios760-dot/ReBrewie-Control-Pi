@@ -1,0 +1,63 @@
+{
+    "IBU": 0,
+    "batchSize": 18.899999618530273,
+    "delayedHoppingTime": 20,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ],
+        [
+            {
+                "time": 5
+            }
+        ]
+    ],
+    "id": "357749c572fc418598228a919c262b79",
+    "mash": {
+        "mashInTemperature": 54,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 25
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 55
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 15
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 9
+    },
+    "name": "Citrataur",
+    "path": "/usr/share/brewie/recipes/357749c572fc418598228a919c262b79"
+}

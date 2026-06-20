@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}{% if recipe %}Edit {{ recipe.name }}{% else %}New Recipe{% endif %} – ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>{% if recipe %}Edit Recipe{% else %}New Recipe{% endif %}</h1>
+  <a href="/recipes" class="btn btn-secondary">← Back to Recipes</a>
+</div>
+
+<div id="editor-wrap">
+  <!-- Recipe header -->
+  <div class="card" style="margin-bottom:1.5rem">
+    <div class="field-row">
+      <label class="field-label">Name</label>
+      <input id="r-name" class="field-input" type="text" placeholder="My IPA"
+             value="{{ recipe.name if recipe else '' }}" />
+    </div>
+    <div class="field-row">
+      <label class="field-label">Style</label>
+      <input id="r-style" class="field-input" type="text" placeholder="American IPA"
+             value="{{ recipe.style if recipe else '' }}" />
+    </div>
+    <div class="field-row">
+      <label class="field-label">Author</label>
+      <input id="r-author" class="field-input" type="text"
+             value="{{ recipe.author if recipe else '' }}" />
+    </div>
+    <div class="field-row">
+      <label class="field-label">Batch Volume (L)</label>
+      <input id="r-volume" class="field-input" type="number" min="1" max="50" step="0.5"
+             value="{{ recipe.batch_volume_l if recipe else 20.0 }}" />
+    </div>
+    <div class="field-row">
+      <label class="field-label">Notes</label>
+      <textarea id="r-notes" class="field-input" rows="3">{{ recipe.notes if recipe else '' }}</textarea>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="section-title">Steps
+    <button class="btn btn-sm btn-start" onclick="addStep()" style="float:right">+ Add Step</button>
+  </div>
+  <div id="steps-list">
+    {% if recipe and recipe.steps %}
+      {% for step in recipe.steps %}
+      <div class="step-card" data-idx="{{ loop.index0 }}">
+        {# JS renderStep() fills this container on DOMContentLoaded #}
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="controls-row" style="margin-top:1.5rem">
+    <button class="btn btn-start" onclick="saveRecipe()">💾 Save Recipe</button>
+    {% if recipe %}
+    <button class="btn btn-stop" onclick="deleteRecipe('{{ recipe.id }}')">Delete</button>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const RECIPE_ID = "{{ recipe.id if recipe else '' }}";
+let stepCount = {{ recipe.steps|length if recipe and recipe.steps else 0 }};
+
+// ── Inject existing steps ─────────────────────────────────────────────────────
+{% if recipe and recipe.steps %}
+const existingSteps = {{ recipe_data.steps | tojson }};
+document.querySelectorAll('.step-card').forEach(function(card, i) {
+  renderStep(card, i, existingSteps[i]);
+});
+{% endif %}
+
+function stepHtml(idx, s) {
+  s = s || {};
+  return `
+  <div class="step-header">
+    <span class="step-num">Step ${idx + 1}</span>
+    <input class="step-name-input" type="text" placeholder="Step name" value="${s.name||''}"/>
+    <button class="btn btn-sm btn-stop" onclick="removeStep(this)">Remove</button>
+  </div>
+  <div class="step-fields">
+    <div class="field-row"><label class="field-label">Duration (s)</label>
+      <input class="sfield" data-f="duration_s" type="number" min="1" value="${s.duration_s||3600}"/></div>
+    <div class="field-row"><label class="field-label">Mash Temp (°C × 10)</label>
+      <input class="sfield" data-f="mash_temp" type="number" min="0" max="1000" value="${s.mash_temp||0}"/>
+      <span class="unit">(e.g. 670 = 67°C)</span></div>
+    <div class="field-row"><label class="field-label">Boil Temp (°C × 10)</label>
+      <input class="sfield" data-f="boil_temp" type="number" min="0" max="1100" value="${s.boil_temp||0}"/></div>
+    <div class="field-row"><label class="field-label">Mash Pump</label>
+      <input class="sfield" data-f="mash_pump" type="number" min="0" max="255" value="${s.mash_pump||0}"/>
+      <span class="unit">(0=off, 255=full)</span></div>
+    <div class="field-row"><label class="field-label">Boil Pump</label>
+      <input class="sfield" data-f="boil_pump" type="number" min="0" max="255" value="${s.boil_pump||0}"/></div>
+    <div class="field-row"><label class="field-label">Cool Valve</label>
+      <input class="sfield" data-f="cool_valve" type="number" min="0" max="255" value="${s.cool_valve||0}"/></div>
+    <div class="field-row"><label class="field-label">Cool Inlet</label>
+      <input class="sfield" data-f="cool_inlet" type="number" min="0" max="255" value="${s.cool_inlet||0}"/></div>
+    <div class="field-row"><label class="field-label">Step Type</label>
+      <input class="sfield" data-f="step_type" type="number" min="1" max="10" value="${s.step_type||1}"/></div>
+    <div class="field-row"><label class="field-label">Step Mode</label>
+      <select class="sfield" data-f="step_mode">
+        <option value="0" ${(s.step_mode||0)==0?'selected':''}>0 – Normal</option>
+        <option value="2" ${(s.step_mode||0)==2?'selected':''}>2 – Sparge</option>
+        <option value="3" ${(s.step_mode||0)==3?'selected':''}>3 – Boil</option>
+      </select></div>
+    <div class="checkbox-row">
+      ${chk('water_inlet','Water Inlet',s)} ${chk('mash_inlet','Mash Inlet',s)}
+      ${chk('boil_inlet','Boil Inlet',s)} ${chk('mash_return','Mash Return',s)}
+      ${chk('boil_return','Boil Return',s)} ${chk('hop1','Hop 1',s)}
+      ${chk('hop2','Hop 2',s)} ${chk('hop3','Hop 3',s)} ${chk('hop4','Hop 4',s)}
+    </div>
+  </div>`;
+}
+
+function chk(f, label, s) {
+  const checked = s && s[f] ? 'checked' : '';
+  return `<label class="chk-label"><input class="sfield" data-f="${f}" type="checkbox" ${checked}/> ${label}</label>`;
+}
+
+function renderStep(card, idx, data) {
+  card.innerHTML = stepHtml(idx, data);
+}
+
+function addStep() {
+  const list = document.getElementById('steps-list');
+  const card = document.createElement('div');
+  card.className = 'step-card';
+  card.setAttribute('data-idx', stepCount);
+  renderStep(card, stepCount, {});
+  list.appendChild(card);
+  stepCount++;
+  card.scrollIntoView({behavior:'smooth'});
+}
+
+function removeStep(btn) {
+  btn.closest('.step-card').remove();
+  // re-number remaining steps
+  document.querySelectorAll('.step-card').forEach(function(c, i) {
+    c.querySelector('.step-num').textContent = 'Step ' + (i + 1);
+    c.setAttribute('data-idx', i);
+  });
+  stepCount = document.querySelectorAll('.step-card').length;
+}
+
+function collectSteps() {
+  return Array.from(document.querySelectorAll('.step-card')).map(function(card) {
+    const s = {name: (card.querySelector('.step-name-input')||{}).value || ''};
+    card.querySelectorAll('.sfield').forEach(function(el) {
+      const f = el.dataset.f;
+      if (el.type === 'checkbox') s[f] = el.checked;
+      else if (['duration_s','mash_temp','boil_temp','mash_pump','boil_pump',
+                 'cool_valve','cool_inlet','step_type','step_mode'].includes(f))
+        s[f] = parseInt(el.value) || 0;
+      else s[f] = el.value;
+    });
+    return s;
+  });
+}
+
+async function saveRecipe() {
+  const recipe = {
+    id: RECIPE_ID || undefined,
+    name:             document.getElementById('r-name').value,
+    style:            document.getElementById('r-style').value,
+    author:           document.getElementById('r-author').value,
+    batch_volume_l:   parseFloat(document.getElementById('r-volume').value) || 20,
+    notes:            document.getElementById('r-notes').value,
+    steps:            collectSteps(),
+  };
+  const url    = RECIPE_ID ? '/api/recipes/' + RECIPE_ID : '/api/recipes';
+  const method = RECIPE_ID ? 'PUT' : 'POST';
+  const r = await fetch(url, {
+    method, headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(recipe)
+  });
+  if (r.ok) { window.location.href = '/recipes'; }
+  else { const e = await r.json(); alert('Save failed: ' + (e.detail || JSON.stringify(e))); }
+}
+
+async function deleteRecipe(id) {
+  if (!confirm('Delete this recipe?')) return;
+  const r = await fetch('/api/recipes/' + id, {method: 'DELETE'});
+  if (r.ok) window.location.href = '/recipes';
+}
+</script>
+{% endblock %}

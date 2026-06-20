@@ -1,0 +1,64 @@
+{
+    "IBU": 0,
+    "batchSize": 18.899999618530273,
+    "coolingTemperature": 21,
+    "delayedHoppingTime": 0,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "3d239d733bf342a99a71fdc77e647006",
+    "mash": {
+        "mashInTemperature": 62,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 20
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 60
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 15
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 9
+    },
+    "name": "Witcher",
+    "path": "/usr/share/brewie/recipes/3d239d733bf342a99a71fdc77e647006"
+}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Progress – ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Brew Progress</h1>
+  <span class="badge badge-{{ state.status }}">{{ state.status | upper }}</span>
+</div>
+
+<div class="progress-hero">
+  <div class="progress-circle-wrap">
+    <svg class="progress-ring" width="200" height="200">
+      <circle class="ring-bg" cx="100" cy="100" r="85" stroke-width="14" fill="none"/>
+      <circle class="ring-fg" id="ring-arc" cx="100" cy="100" r="85" stroke-width="14" fill="none"
+        stroke-dasharray="534"
+        stroke-dashoffset="{% if state.step_duration_s > 0 %}{{ 534 - (state.step_elapsed_s / state.step_duration_s * 534)|round|int }}{% else %}534{% endif %}"
+        transform="rotate(-90 100 100)"/>
+    </svg>
+    <div class="ring-inner">
+      <div class="ring-pct" id="step-pct">
+        {% if state.step_duration_s > 0 %}
+          {{ (state.step_elapsed_s / state.step_duration_s * 100)|round(0)|int }}%
+        {% else %}—{% endif %}
+      </div>
+      <div class="ring-label">{{ state.step_name or "Idle" }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card-grid" style="margin-top:2rem">
+  <div class="card">
+    <div class="card-label">Current Step</div>
+    <div class="card-value" id="p-step-cur">{{ state.current_step + 1 }} / {{ state.total_steps or "—" }}</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Elapsed / Duration</div>
+    <div class="card-value" id="p-step-time">{{ state.step_elapsed_s }}s / {{ state.step_duration_s }}s</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Mash Temp</div>
+    <div class="card-value" id="p-mash">{{ state.mash_temp_actual }}°C</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Boil Temp</div>
+    <div class="card-value" id="p-boil">{{ state.boil_temp_actual }}°C</div>
+  </div>
+</div>
+
+<div class="controls-row" style="margin-top:1.5rem">
+  <button class="btn btn-pause"  onclick="brewControl('pause')">⏸ Pause</button>
+  <button class="btn btn-resume" onclick="brewControl('resume')">⏯ Resume</button>
+  <button class="btn btn-stop"   onclick="brewControl('stop')">⏹ Stop</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// WebSocket updates for progress page
+window._wsHandlers = window._wsHandlers || [];
+window._wsHandlers.push(function(data) {
+  const s = data.data || data;
+  const dur = s.step_duration_s || 0;
+  const el  = s.step_elapsed_s  || 0;
+  const pct = dur > 0 ? Math.round(el / dur * 100) : 0;
+  const circ = 534;
+  document.getElementById('ring-arc').setAttribute('stroke-dashoffset', circ - circ * pct / 100);
+  document.getElementById('step-pct').textContent = dur > 0 ? pct + '%' : '—';
+  document.getElementById('p-step-cur').textContent  = (s.current_step + 1) + ' / ' + (s.total_steps || '—');
+  document.getElementById('p-step-time').textContent = el + 's / ' + dur + 's';
+  document.getElementById('p-mash').textContent = s.mash_temp_actual + '°C';
+  document.getElementById('p-boil').textContent = s.boil_temp_actual + '°C';
+});
+</script>
+{% endblock %}

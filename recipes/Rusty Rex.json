@@ -1,0 +1,140 @@
+{
+    "IBU": 0,
+    "batchSize": 19.799999237060547,
+    "delayedHopping": 0,
+    "delayedHoppingTime": 10,
+    "efficiency": 0.69999998807907104,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 4
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "alpha": null,
+                "amount": null,
+                "cage": 0,
+                "customName": "",
+                "form": "",
+                "name": "",
+                "time": 60,
+                "use": "Boil",
+                "version": "1"
+            }
+        ],
+        [
+            {
+                "alpha": null,
+                "amount": null,
+                "cage": 1,
+                "customName": "",
+                "form": "",
+                "name": "",
+                "time": 30,
+                "use": "Boil",
+                "version": "1"
+            }
+        ],
+        [
+            {
+                "alpha": null,
+                "amount": null,
+                "cage": 2,
+                "customName": "",
+                "form": "",
+                "name": "",
+                "time": 20,
+                "use": "Boil",
+                "version": "1"
+            }
+        ],
+        [
+            {
+                "alpha": null,
+                "amount": null,
+                "cage": 3,
+                "customName": "",
+                "form": "",
+                "name": "",
+                "time": 10,
+                "use": "Boil",
+                "version": "1"
+            }
+        ]
+    ],
+    "id": "d4151a81039040139d9b0e4a0fbb77d8",
+    "mash": {
+        "automaticWaterInlet": true,
+        "mashInTemperature": 42,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "bags": "1",
+                    "name": "",
+                    "phase": 0,
+                    "stepTemp": 42,
+                    "stepTime": 20,
+                    "version": "1"
+                },
+                {
+                    "bags": "1",
+                    "name": "",
+                    "phase": 0,
+                    "stepTemp": 52,
+                    "stepTime": 20,
+                    "version": "1"
+                },
+                {
+                    "bags": "1",
+                    "name": "",
+                    "phase": 0,
+                    "stepTemp": 62,
+                    "stepTime": 40,
+                    "version": "1"
+                },
+                {
+                    "bags": "1",
+                    "name": "",
+                    "phase": 0,
+                    "stepTemp": 72,
+                    "stepTime": 10,
+                    "version": "1"
+                },
+                {
+                    "stepTemp": 78,
+                    "stepTime": 1
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 9,
+        "version": 1
+    },
+    "name": "Rusty Rex",
+    "path": "/usr/share/brewie/recipes/d4151a81039040139d9b0e4a0fbb77d8",
+    "style": {
+        "category": "",
+        "categoryNumber": "",
+        "styleGuide": "BJCP",
+        "styleLetter": "",
+        "version": 1
+    },
+    "tags": [
+    ],
+    "version": 1,
+    "yeasts": [
+        {
+            "amount": null,
+            "attenuation": 0,
+            "customName": "",
+            "name": ""
+        }
+    ]
+}

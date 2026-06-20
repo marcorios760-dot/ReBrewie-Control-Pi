@@ -1,0 +1,60 @@
+{
+    "IBU": 0,
+    "batchSize": 18.629999160766602,
+    "coolingTemperature": 23,
+    "delayedHoppingTime": 40,
+    "efficiency": 0.55000001192092896,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 6.5999999046325684
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 15
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ],
+        [
+            {
+                "time": 5
+            }
+        ]
+    ],
+    "id": "4b988a3933804d89ad1f06685edf9592",
+    "mash": {
+        "mashInTemperature": 52,
+        "mashInWater": 15.300000190734863,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 52,
+                    "stepTime": 10
+                },
+                {
+                    "stepTemp": 69,
+                    "stepTime": 80
+                }
+            ]
+        ],
+        "spargingTemperature": 80,
+        "spargingTime": 20,
+        "spargingWater": 12
+    },
+    "name": "Hopus Pocus",
+    "path": "/usr/share/brewie/recipes/4b988a3933804d89ad1f06685edf9592"
+}

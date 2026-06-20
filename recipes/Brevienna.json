@@ -1,0 +1,64 @@
+{
+    "IBU": 0,
+    "batchSize": 19.799999237060547,
+    "coolingTemperature": 20,
+    "delayedHoppingTime": 0,
+    "efficiency": 0.69999998807907104,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 4
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "7e904a9c226a47428fb30b796c93a261",
+    "mash": {
+        "mashInTemperature": 54,
+        "mashInWater": 17.799999237060547,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 30
+                },
+                {
+                    "stepTemp": 69,
+                    "stepTime": 45
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 15
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 15,
+        "spargingWater": 8.1999998092651367
+    },
+    "name": "Brevienna",
+    "path": "/usr/share/brewie/recipes/7e904a9c226a47428fb30b796c93a261"
+}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Recipes – ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Recipes</h1>
+  <div class="header-actions">
+    <input id="recipe-upload-input" class="file-input-hidden" type="file" accept=".json,application/json" />
+    <button id="recipe-upload-btn" class="btn btn-secondary" type="button" onclick="chooseRecipeFile()">Upload recipe</button>
+    <a href="/recipes/new" class="btn btn-start">+ New Recipe</a>
+  </div>
+</div>
+<div id="recipe-upload-status" class="upload-status" aria-live="polite"></div>
+
+{% if recipes %}
+<div class="recipe-list">
+  {% for r in recipes %}
+  <div class="recipe-card">
+    <div class="recipe-info">
+      <div class="recipe-name">{{ r.name }}</div>
+      <div class="recipe-meta">
+        {% if r.style %}{{ r.style }} · {% endif %}
+        {{ r.batch_volume_l }}L · {{ r.steps|length }} step(s)
+        {% if r.author %} · {{ r.author }}{% endif %}
+      </div>
+      {% if r.notes %}<div class="recipe-notes">{{ r.notes[:120] }}{{ '…' if r.notes|length > 120 }}</div>{% endif %}
+    </div>
+    <div class="recipe-actions">
+      <button class="btn btn-start btn-sm" onclick="startRecipe('{{ r.id }}')">▶ Brew</button>
+      <a href="/recipes/{{ r.id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+      <button class="btn btn-stop btn-sm" onclick="deleteRecipe('{{ r.id }}', this)">Delete</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <p>No recipes yet.</p>
+  <a href="/recipes/new" class="btn btn-start">Create your first recipe</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function startRecipe(id) {
+  if (!confirm('Start brewing with this recipe?')) return;
+  const r = await fetch('/api/control/start', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({recipe_id: id})
+  });
+  if (r.ok) { window.location.href = '/progress'; }
+  else { const e = await r.json(); alert('Error: ' + (e.detail || JSON.stringify(e))); }
+}
+
+async function deleteRecipe(id, btn) {
+  if (!confirm('Delete this recipe? This cannot be undone.')) return;
+  const r = await fetch('/api/recipes/' + id, {method: 'DELETE'});
+  if (r.ok) { btn.closest('.recipe-card').remove(); }
+  else { alert('Delete failed'); }
+}
+
+function chooseRecipeFile() {
+  document.getElementById('recipe-upload-input').click();
+}
+
+document.getElementById('recipe-upload-input').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const status = document.getElementById('recipe-upload-status');
+  const button = document.getElementById('recipe-upload-btn');
+  const body = new FormData();
+  body.append('file', file);
+
+  status.className = 'upload-status';
+  status.textContent = 'Uploading recipe...';
+  button.disabled = true;
+
+  try {
+    const response = await fetch('/api/recipes/upload', { method: 'POST', body });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.detail || 'Upload failed');
+    }
+    status.className = 'upload-status upload-success';
+    status.textContent = `Imported "${payload.name}" (${payload.steps} steps).`;
+    window.setTimeout(() => window.location.reload(), 800);
+  } catch (error) {
+    status.className = 'upload-status upload-error';
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    event.target.value = '';
+  }
+});
+</script>
+{% endblock %}

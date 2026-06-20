@@ -1,0 +1,64 @@
+{
+    "IBU": 0,
+    "batchSize": 20.430000305175781,
+    "coolingTemperature": 22,
+    "delayedHoppingTime": 30,
+    "efficiency": 0.69999998807907104,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 4.3000001907348633
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 50
+            }
+        ],
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "bd8077fc2b6046a6875bed1e6a317b80",
+    "mash": {
+        "mashInTemperature": 52,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 52,
+                    "stepTime": 10
+                },
+                {
+                    "stepTemp": 62,
+                    "stepTime": 40
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 30
+                }
+            ]
+        ],
+        "spargingTemperature": 80,
+        "spargingTime": 20,
+        "spargingWater": 10
+    },
+    "name": "Redneck Hopster",
+    "path": "/usr/share/brewie/recipes/bd8077fc2b6046a6875bed1e6a317b80"
+}

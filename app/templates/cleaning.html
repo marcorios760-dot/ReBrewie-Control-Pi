@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Cleaning Programs - ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Cleaning Programs</h1>
+    <p class="page-sub">Run imported Brewie maintenance programs before or after brewing.</p>
+  </div>
+  <div class="header-actions">
+    <input id="cleaning-upload-input" class="file-input-hidden" type="file" accept=".json,application/json" />
+    <button id="cleaning-upload-btn" class="btn btn-secondary" type="button" onclick="chooseCleaningFile()">Upload program</button>
+    <button class="btn btn-stop" type="button" onclick="emergencyStop()">Emergency Stop</button>
+  </div>
+</div>
+
+<div id="cleaning-status" class="upload-status" aria-live="polite"></div>
+
+{% if programs %}
+<div class="program-grid">
+  {% for program in programs %}
+  <div class="program-card">
+    <div class="program-title">{{ program.name }}</div>
+    <div class="recipe-meta">
+      {{ program.style or 'Cleaning program' }} · {{ program.batch_volume_l }}L · {{ program.steps|length }} step(s)
+      {% if program.author %} · {{ program.author }}{% endif %}
+    </div>
+    {% if program.notes %}
+    <div class="recipe-notes">{{ program.notes }}</div>
+    {% endif %}
+    <div class="program-actions">
+      <button
+        class="btn btn-start js-cleaning-run"
+        type="button"
+        data-program-id="{{ program.id }}"
+        data-program-name="{{ program.name }}"
+      >Run</button>
+      <button class="btn btn-stop" type="button" onclick="emergencyStop()">Stop</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <p>No cleaning programs imported yet.</p>
+  <button class="btn btn-secondary" type="button" onclick="chooseCleaningFile()">Upload Short, Full, or Sanitizing Clean JSON</button>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+function chooseCleaningFile() {
+  document.getElementById('cleaning-upload-input').click();
+}
+
+async function startCleaning(id, name) {
+  const msg = `Run "${name}" now?\n\nConfirm the machine is ready, vessels are positioned correctly, and water/drain paths are safe.`;
+  if (!confirm(msg)) return;
+  const status = document.getElementById('cleaning-status');
+  status.className = 'upload-status';
+  status.textContent = 'Starting ' + name + '...';
+  const response = await fetch('/api/cleaning/' + id + '/start', { method: 'POST' });
+  const payload = await response.json().catch(() => ({}));
+  if (response.ok) {
+    status.className = 'upload-status upload-success';
+    status.textContent = 'Started ' + (payload.program || name) + '.';
+    window.setTimeout(() => window.location.href = '/progress', 700);
+  } else {
+    status.className = 'upload-status upload-error';
+    status.textContent = payload.detail || 'Unable to start cleaning program.';
+  }
+}
+
+document.querySelectorAll('.js-cleaning-run').forEach((button) => {
+  button.addEventListener('click', () => {
+    startCleaning(button.dataset.programId, button.dataset.programName);
+  });
+});
+
+async function emergencyStop() {
+  if (!confirm('Stop the current machine program and close valves now?')) return;
+  const status = document.getElementById('cleaning-status');
+  status.className = 'upload-status';
+  status.textContent = 'Sending emergency stop...';
+  const response = await fetch('/api/control/stop', { method: 'POST' });
+  if (response.ok) {
+    status.className = 'upload-status upload-success';
+    status.textContent = 'Stop command sent.';
+  } else {
+    const payload = await response.json().catch(() => ({}));
+    status.className = 'upload-status upload-error';
+    status.textContent = payload.detail || 'Stop command failed.';
+  }
+}
+
+document.getElementById('cleaning-upload-input').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const status = document.getElementById('cleaning-status');
+  const button = document.getElementById('cleaning-upload-btn');
+  const body = new FormData();
+  body.append('file', file);
+
+  status.className = 'upload-status';
+  status.textContent = 'Uploading cleaning program...';
+  button.disabled = true;
+
+  try {
+    const response = await fetch('/api/cleaning/upload', { method: 'POST', body });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.detail || 'Upload failed');
+    }
+    status.className = 'upload-status upload-success';
+    status.textContent = `Imported "${payload.name}" (${payload.steps} steps).`;
+    window.setTimeout(() => window.location.reload(), 800);
+  } catch (error) {
+    status.className = 'upload-status upload-error';
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    event.target.value = '';
+  }
+});
+</script>
+{% endblock %}

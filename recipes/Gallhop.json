@@ -1,0 +1,63 @@
+{
+    "IBU": 0,
+    "batchSize": 18.899999618530273,
+    "delayedHoppingTime": 0,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 30
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "6aa027beb1dd480f9f18cd916912b03d",
+    "mash": {
+        "mashInTemperature": 52,
+        "mashInWater": 17,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 40
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 50
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 20
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 25,
+        "spargingWater": 9
+    },
+    "name": "Gallhop",
+    "path": "/usr/share/brewie/recipes/6aa027beb1dd480f9f18cd916912b03d"
+}

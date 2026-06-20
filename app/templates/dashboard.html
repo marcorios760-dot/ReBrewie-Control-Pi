@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Brew Dashboard</h1>
+  <span class="badge badge-{{ state.status }}">{{ state.status | upper }}</span>
+</div>
+
+<!-- Status cards row -->
+<div class="card-grid">
+
+  <div class="card">
+    <div class="card-label">Mash Temperature</div>
+    <div class="card-value" id="mash-temp-actual">{{ state.mash_temp_actual }}°C</div>
+    <div class="card-sub">Target: <span id="mash-temp-target">{{ state.mash_temp_target }}°C</span></div>
+    <div class="temp-bar-wrap">
+      <div class="temp-bar" id="mash-temp-bar" style="width:{{ [state.mash_temp_actual/100*100,100]|min }}%"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Boil Temperature</div>
+    <div class="card-value" id="boil-temp-actual">{{ state.boil_temp_actual }}°C</div>
+    <div class="card-sub">Target: <span id="boil-temp-target">{{ state.boil_temp_target }}°C</span></div>
+    <div class="temp-bar-wrap">
+      <div class="temp-bar temp-bar-boil" id="boil-temp-bar" style="width:{{ [state.boil_temp_actual/100*100,100]|min }}%"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Weight</div>
+    <div class="card-value" id="weight-kg">{{ state.weight_kg }} kg</div>
+    <div class="card-sub">Pressure: <span id="pressure">{{ state.pressure_mbar }} mbar</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Step Progress</div>
+    <div class="card-value" id="step-name">{{ state.step_name or "—" }}</div>
+    <div class="card-sub">
+      Step <span id="step-cur">{{ state.current_step + 1 }}</span> /
+      <span id="step-tot">{{ state.total_steps or "—" }}</span>
+    </div>
+    <div class="temp-bar-wrap">
+      <div class="temp-bar temp-bar-step" id="step-bar"
+           style="width:{% if state.step_duration_s > 0 %}{{ (state.step_elapsed_s / state.step_duration_s * 100)|round(1) }}%{% else %}0%{% endif %}"></div>
+    </div>
+    <div class="card-sub" id="step-time">
+      {{ state.step_elapsed_s }}s / {{ state.step_duration_s }}s
+    </div>
+  </div>
+
+</div>
+
+<!-- Actuator status row -->
+<div class="section-title">Actuator Command State</div>
+<div class="state-note" id="actuator-note">
+  Displayed actuator values are last-commanded by this app and are not hardware-confirmed by Brewie telemetry.
+</div>
+<div class="actuator-grid">
+  {% set actuators = [
+    ("Water Inlet",  state.water_inlet),
+    ("Mash Inlet",   state.mash_inlet),
+    ("Boil Inlet",   state.boil_inlet),
+    ("Cool Inlet",   state.cool_inlet),
+    ("Cool Valve",   state.cool_valve),
+    ("Outlet Valve", state.outlet_valve),
+    ("Mash Return",  state.mash_return),
+    ("Boil Return",  state.boil_return),
+    ("Mash Pump",    state.mash_pump),
+    ("Boil Pump",    state.boil_pump),
+    ("Fan",          state.fan),
+    ("Hop 1",        state.hop1),
+    ("Hop 2",        state.hop2),
+    ("Hop 3",        state.hop3),
+    ("Hop 4",        state.hop4),
+  ] %}
+  {% for label, active in actuators %}
+  <div class="actuator actuator-commanded {% if active %}actuator-on{% endif %}" id="act-{{ label|lower|replace(' ', '-') }}">
+    <div class="actuator-dot {% if active %}dot-green{% else %}dot-grey{% endif %}"></div>
+    <div class="actuator-label">{{ label }}</div>
+    <div class="actuator-source">CMD</div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Brew controls -->
+<div class="section-title">Brew Controls</div>
+<div class="controls-row">
+  <button class="btn btn-start"  onclick="brewControl('start')">▶ Start</button>
+  <button class="btn btn-pause"  onclick="brewControl('pause')">⏸ Pause</button>
+  <button class="btn btn-resume" onclick="brewControl('resume')">⏯ Resume</button>
+  <button class="btn btn-stop"   onclick="brewControl('stop')">⏹ Stop</button>
+</div>
+
+<!-- Active recipe select -->
+<div class="controls-row" style="margin-top:1rem">
+  <label class="field-label">Recipe:</label>
+  <select id="recipe-select" class="select" onchange="setRecipe(this.value)">
+    <option value="">— Manual (no recipe) —</option>
+  </select>
+  <a href="/recipes/new" class="btn btn-secondary">+ New Recipe</a>
+</div>
+
+<!-- Log -->
+<div class="section-title">Live Log</div>
+<div class="log-box" id="log-box">
+  {% for line in state.log[-50:] %}
+  <div>{{ line }}</div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

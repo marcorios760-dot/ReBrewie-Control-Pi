@@ -1,0 +1,64 @@
+{
+    "IBU": 0,
+    "batchSize": 19.350000381469727,
+    "coolingTemperature": 23,
+    "delayedHoppingTime": 10,
+    "efficiency": 0.64999997615814209,
+    "estColor": 0.56105124950408936,
+    "estOG": 1,
+    "fermentables": [
+        [
+            {
+                "amount": 5.5999999046325684
+            }
+        ]
+    ],
+    "hops": [
+        [
+            {
+                "time": 60
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 20
+            }
+        ],
+        [
+            {
+                "time": 10
+            }
+        ]
+    ],
+    "id": "47a941cdb0b440869697fcf944ec9a7d",
+    "mash": {
+        "mashInTemperature": 62,
+        "mashInWater": 16.100000381469727,
+        "mashSteps": [
+            [
+                {
+                    "stepTemp": 62,
+                    "stepTime": 15
+                },
+                {
+                    "stepTemp": 67,
+                    "stepTime": 70
+                },
+                {
+                    "stepTemp": 72,
+                    "stepTime": 20
+                }
+            ]
+        ],
+        "spargingTemperature": 78,
+        "spargingTime": 20,
+        "spargingWater": 11
+    },
+    "name": "Fall In A Bottle",
+    "path": "/usr/share/brewie/recipes/47a941cdb0b440869697fcf944ec9a7d"
+}
