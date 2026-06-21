@@ -40,6 +40,14 @@ class Settings(BaseSettings):
     local_bind: str = Field("0.0.0.0", alias="LOCAL_BIND")
     local_port: int = Field(8080, alias="LOCAL_PORT")
 
+    # Blink camera snapshot feed
+    blink_enabled: bool = Field(False, alias="BLINK_ENABLED")
+    blink_username: str = Field("", alias="BLINK_USERNAME")
+    blink_password: str = Field("", alias="BLINK_PASSWORD")
+    blink_camera_name: str = Field("", alias="BLINK_CAMERA_NAME")
+    blink_refresh_seconds: int = Field(60, alias="BLINK_REFRESH_SECONDS")
+    blink_auth_file: str = Field(".blink-auth.json", alias="BLINK_AUTH_FILE")
+
     # Recipes storage directory
     recipe_dir: str = Field("recipes", alias="RECIPE_DIR")
 

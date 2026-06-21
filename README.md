@@ -27,6 +27,7 @@ The app runs a FastAPI web server on the Raspberry Pi and communicates with the 
 - Brewing recipe list, editor, upload/import flow, and recipe start/pause/resume/stop controls.
 - Stock Brewie JSON recipe importer that converts original `instructions` arrays into internal `P103` controller steps.
 - Separate Cleaning Programs area for Short Clean, Full Clean, and Sanitizing Clean routines.
+- Optional Blink camera snapshot panel on the Progress page with a 60-second refresh interval.
 - Emergency stop path that sends valve/pump/heater shutdown commands.
 - Developer Mode terminal for raw P-command testing.
 - Stock Brewie TCP framing support (`$ packet length payload check *`) with ACK parsing.
@@ -69,6 +70,7 @@ The web interface is available from any browser on the same LAN at `http://<pi-i
 - Jinja2 templates
 - Vanilla JavaScript and CSS
 - pyserial and httpx
+- blinkpy for optional Blink camera snapshots
 - systemd service for Raspberry Pi deployment
 - PowerShell and shell deployment scripts
 - OpenAI Codex App, used during development, review, and documentation preparation
@@ -160,6 +162,50 @@ Use the Cleaning page for maintenance programs:
 
 Each run requires confirmation. Emergency Stop remains available on the same page.
 
+### Blink Camera
+
+The Progress page can show an optional Blink camera snapshot beside the brew progress tracker. Blink does not provide a true local live video stream through `blinkpy`; this app requests a fresh cloud snapshot no faster than once every 60 seconds.
+
+This integration was tested with a Blink Mini camera shown by Blink as `Mini - 0FSB`.
+
+Set these values in `.env` when you want the panel enabled:
+
+```env
+BLINK_ENABLED=true
+BLINK_USERNAME=your_blink_email@example.com
+BLINK_PASSWORD=your_blink_password
+BLINK_CAMERA_NAME=
+BLINK_REFRESH_SECONDS=60
+BLINK_AUTH_FILE=.blink-auth.json
+```
+
+Leave `BLINK_CAMERA_NAME` blank to use the first camera returned by Blink, or set it to the exact camera name shown in the Blink app.
+
+Blink commonly requires one-time two-factor authentication before a headless Raspberry Pi service can request snapshots. The app stores the verified Blink session in `BLINK_AUTH_FILE` (default `.blink-auth.json`) inside `/opt/rebrewie-control-pi`. The deployment script preserves both `.env` and `.blink-auth.json`, so later app updates should not wipe the Blink login token.
+
+Suggested Pi-side verification flow:
+
+1. Configure the Blink variables in `/opt/rebrewie-control-pi/.env`.
+2. Restart the service: `sudo systemctl restart rebrewie-control-pi`.
+3. Open `/progress` or request `/api/blink/snapshot` once. Blink may send a verification code by text message or email.
+4. Use a short one-time script on the Pi to submit that code through `blinkpy`, then save `.blink-auth.json`.
+5. Restart the service again and check `/api/blink/status`.
+
+The verification code can expire quickly. If multiple failed attempts are made, Blink may return `2fa_rate_limit_exceeded` or a message such as `Try again in 600 seconds`; wait for that timeout before requesting/submitting another code. If `.blink-auth.json` is empty or malformed after a failed attempt, delete it and re-run verification with a fresh code.
+
+Useful checks on the Pi:
+
+```bash
+cd /opt/rebrewie-control-pi
+sudo systemctl status rebrewie-control-pi
+curl http://127.0.0.1:8080/api/blink/status
+curl -o /tmp/blink.jpg http://127.0.0.1:8080/api/blink/snapshot
+```
+
+Expected successful status includes `"enabled":true`, `"configured":true`, `"auth_file_exists":true`, and `"last_error":null`.
+
+If the dashboard still shows the raw full-size image, hard-refresh the browser so it loads the current CSS. The dashboard intentionally displays a resized snapshot; opening `/api/blink/snapshot` directly in its own browser tab will show the raw Blink image dimensions.
+
 ### Recipes
 
 Upload ReBrewie-format JSON or original stock Brewie JSON recipes. Stock recipe JSON files are converted into internal controller steps and saved into `recipes/`.
@@ -173,6 +219,8 @@ Send raw P-commands directly to the controller. This mode is intended for carefu
 | Method | Endpoint | Description |
 | --- | --- | --- |
 | GET | `/api/status` | Current application and telemetry state |
+| GET | `/api/blink/status` | Blink camera configuration/cache status |
+| GET | `/api/blink/snapshot` | Cached Blink camera JPEG snapshot |
 | GET | `/api/log?n=100` | Recent in-memory event log |
 | POST | `/api/command` | Send a raw command, JSON body `{ "cmd": "P999" }` |
 | POST | `/api/control/start` | Start a brew recipe, body `{ "recipe_id": "..." }` |
@@ -210,6 +258,12 @@ Configuration is handled by environment variables, usually through `.env`.
 | `BREWIE_SERIAL_BAUD` | `115200` | Serial baud rate |
 | `LOCAL_BIND` | `0.0.0.0` | Web bind address |
 | `LOCAL_PORT` | `8080` | Web port |
+| `BLINK_ENABLED` | `false` | Enable the optional Progress page camera panel |
+| `BLINK_USERNAME` | empty | Blink account username/email |
+| `BLINK_PASSWORD` | empty | Blink account password |
+| `BLINK_CAMERA_NAME` | empty | Optional exact Blink camera name; first camera is used when blank |
+| `BLINK_REFRESH_SECONDS` | `60` | Snapshot refresh interval; values below 60 are clamped to 60 |
+| `BLINK_AUTH_FILE` | `.blink-auth.json` | Saved blinkpy auth token file after 2FA verification |
 | `RECIPE_DIR` | `recipes` | Recipe storage folder |
 | `DISCOVERY_ENABLED` | `true` | Enable discovery helpers |
 | `TO_LITER` | `20.0` | Default batch/session volume |
@@ -409,6 +463,8 @@ This is experimental software, please use at your own risk as no support is curr
 
 I have no programming experience and have taken this project on to learn as I go, so please forgive all of my coding errors. Original source code files and examples borrowed from the Brewie+ stock software, ReBrewie project improvements, Facebook Brewie Owners Group, https://think.gusius.com/, and multiple others that deserve all the credit for compiling and updating the original code to improve and keep our Brewie machines going.
 
+Blink camera integration references the community [`fronzbot/blinkpy`](https://github.com/fronzbot/blinkpy) project.
+
 ## Acknowledgement Codes
 
 The original manufacturer Android APK file was inspected to understand the original app layout and styling.
@@ -418,6 +474,7 @@ The original manufacturer Android APK file was inspected to understand the origi
 - Original Brewie+ software and Android App APK
 - ReBrewie project source code files
 - Brewie Owners community knowledge and troubleshooting notes
+- [`fronzbot/blinkpy`](https://github.com/fronzbot/blinkpy), used for Blink camera account/session and snapshot behavior
 
 ## Related Projects
 
@@ -427,6 +484,8 @@ Related information and developments you might find interesting can be found by 
 
 ### 0.2.0 - Current public release
 
+- Added optional Blink camera snapshot panel on the Progress page.
+- Added Blink 2FA token-file support and troubleshooting documentation.
 - Added stock Brewie TCP frame encoding and ACK parsing.
 - Added recipe JSON upload and conversion.
 - Added Cleaning Programs page and separate cleaning program storage.
@@ -446,5 +505,3 @@ MIT License. See [LICENSE](LICENSE).
 ## Contact
 
 No contact information is provided. The author is unable to provide direct support.
-
-

@@ -56,6 +56,7 @@ $tarArgs = @(
     "--exclude=__pycache__",
     "--exclude=*.pyc",
     "--exclude=.env",
+    "--exclude=.blink-auth.json",
     "--exclude=logs"
 )
 
@@ -89,6 +90,7 @@ try {
 
     $remoteExcludes = @(
         "--exclude=.env",
+        "--exclude=.blink-auth.json",
         "--exclude=.venv/",
         "--exclude=logs/"
     )

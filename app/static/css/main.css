@@ -342,12 +342,21 @@ textarea.field-input { resize: vertical; }
 .progress-hero {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
+}
+.progress-top-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 250px;
+  align-items: center;
+  gap: 1rem;
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
 }
 .progress-circle-wrap {
   position: relative;
   width: 200px;
   height: 200px;
+  justify-self: end;
 }
 .ring-bg  { stroke: var(--bg3); }
 .ring-fg  { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset .5s ease; }
@@ -361,6 +370,66 @@ textarea.field-input { resize: vertical; }
 }
 .ring-pct { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
 .ring-label { font-size: .8rem; color: var(--text-dim); text-align: center; }
+
+.camera-panel {
+  width: 250px;
+  max-width: 250px;
+  justify-self: start;
+}
+.camera-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: .75rem;
+  margin-bottom: .25rem;
+}
+.camera-panel h2 {
+  font-size: .62rem;
+  line-height: 1.2;
+}
+.camera-panel p {
+  color: var(--text-dim);
+  display: none;
+}
+.camera-frame {
+  position: relative;
+  width: 250px !important;
+  height: 140.625px !important;
+  max-width: 250px !important;
+  max-height: 140.625px !important;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #070a0f;
+  box-shadow: var(--shadow);
+}
+.camera-frame img {
+  width: 250px !important;
+  height: 140.625px !important;
+  max-width: 250px !important;
+  max-height: 140.625px !important;
+  object-fit: cover;
+  display: block;
+}
+.camera-frame img.is-hidden {
+  display: none;
+}
+.camera-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-dim);
+  background:
+    linear-gradient(135deg, rgba(245, 166, 35, .08), transparent),
+    #070a0f;
+}
+.camera-fallback.is-visible {
+  display: flex;
+}
 
 /* ── Preparation grid ────────────────────────────────────────────────────── */
 .prep-grid {
@@ -538,4 +607,17 @@ select.sfield { padding: .32rem .6rem; }
   .container { padding: 1rem; }
   .card-value { font-size: 1.5rem; }
   .prep-card.wide { grid-column: span 1; }
+  .progress-top-row {
+    grid-template-columns: 1fr;
+    max-width: 280px;
+    gap: .75rem;
+  }
+  .progress-circle-wrap {
+    justify-self: center;
+  }
+  .camera-panel {
+    width: 250px;
+    max-width: 250px;
+    justify-self: center;
+  }
 }

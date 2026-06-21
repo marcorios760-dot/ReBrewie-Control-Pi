@@ -24,9 +24,10 @@ import json
 import time
 from typing import Any
 
-from fastapi import APIRouter, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, File, HTTPException, Request, Response, UploadFile
 from pydantic import BaseModel, Field
 
+from ..blink_camera import BlinkCameraError, blink_camera_service
 from ..config import settings, COMMAND_MAP
 from ..state import brew_state
 from ..parser import refresh_state_from_last_raw
@@ -68,6 +69,26 @@ async def _send_and_record(transport: Any, cmd: str, *, delay: float = 0.0) -> N
 async def get_status() -> dict:
     refresh_state_from_last_raw()
     return brew_state.to_dict()
+
+
+@router.get("/blink/status")
+async def get_blink_status() -> dict:
+    return blink_camera_service.status()
+
+
+@router.get("/blink/snapshot")
+async def get_blink_snapshot() -> Response:
+    try:
+        snapshot = await blink_camera_service.get_snapshot()
+    except BlinkCameraError as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+    headers = {
+        "Cache-Control": f"private, max-age={blink_camera_service.refresh_seconds}",
+        "X-Blink-Camera": snapshot.camera_name,
+        "X-Blink-Refreshed-At": str(int(snapshot.refreshed_at)),
+    }
+    return Response(snapshot.image, media_type="image/jpeg", headers=headers)
 
 
 @router.get("/log")
