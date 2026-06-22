@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Settings - ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Settings</h1>
+    <p class="page-sub">Registered machine and remote access status.</p>
+  </div>
+</div>
+
+{% if saved %}
+<div class="upload-status upload-success">Machine registration saved.</div>
+{% endif %}
+
+<section class="settings-grid">
+  <div class="settings-panel">
+    <h2>Registered Machine</h2>
+    <div class="setting-summary">
+      Owner account: <strong>{{ owner_registration.username }}</strong>
+    </div>
+    <form method="post" action="/settings/machine">
+      <label class="field-stack">
+        <span>Machine label</span>
+        <input class="field-input" name="label" value="{{ machine_registration.label }}" required />
+      </label>
+      <label class="field-stack">
+        <span>Machine ID / Serial #</span>
+        <input class="field-input" name="machine_id" value="{{ machine_registration.machine_id }}" required />
+      </label>
+      <button class="btn btn-start" type="submit">Save Machine</button>
+    </form>
+  </div>
+
+  <div class="settings-panel">
+    <h2>Remote Access</h2>
+    <div class="status-list">
+      <div>
+        <span class="dot {% if remote_connected %}dot-green{% else %}dot-grey{% endif %}"></span>
+        <span>{% if remote_connected %}Remote connection established.{% else %}Remote connection not detected for this request.{% endif %}</span>
+      </div>
+      <div>
+        <span class="dot {% if auth_enabled %}dot-green{% else %}dot-grey{% endif %}"></span>
+        <span>{% if auth_enabled %}App login enabled.{% else %}App login disabled in local settings.{% endif %}</span>
+      </div>
+      <div>
+        <span class="dot {% if state.connected %}dot-green{% else %}dot-red{% endif %}"></span>
+        <span>{{ "Brewie transport connected." if state.connected else "Brewie transport disconnected." }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

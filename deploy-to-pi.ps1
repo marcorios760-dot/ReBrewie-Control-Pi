@@ -57,6 +57,8 @@ $tarArgs = @(
     "--exclude=*.pyc",
     "--exclude=.env",
     "--exclude=.blink-auth.json",
+    "--exclude=owner-registration.json",
+    "--exclude=machine-registration.json",
     "--exclude=logs"
 )
 
@@ -91,6 +93,8 @@ try {
     $remoteExcludes = @(
         "--exclude=.env",
         "--exclude=.blink-auth.json",
+        "--exclude=owner-registration.json",
+        "--exclude=machine-registration.json",
         "--exclude=.venv/",
         "--exclude=logs/"
     )

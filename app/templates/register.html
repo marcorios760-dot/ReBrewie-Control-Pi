@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Register - ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<section class="auth-panel register-panel">
+  <div class="page-header auth-header">
+    <div>
+      <h1>Initial Registration</h1>
+      <p class="page-sub">Create the owner login and bind this ReBrewie controller to a Brewie machine.</p>
+    </div>
+  </div>
+
+  <form class="auth-form" method="post" action="/register">
+    <label class="field-stack">
+      <span>Username</span>
+      <input class="field-input" name="username" autocomplete="username" minlength="3" required />
+    </label>
+    <label class="field-stack">
+      <span>Password</span>
+      <input class="field-input" name="password" type="password" autocomplete="new-password" minlength="10" required />
+    </label>
+    <label class="field-stack">
+      <span>Confirm password</span>
+      <input class="field-input" name="password_confirm" type="password" autocomplete="new-password" minlength="10" required />
+    </label>
+    <label class="field-stack">
+      <span>Machine label</span>
+      <input class="field-input" name="label" value="Brewie" required />
+    </label>
+    <label class="field-stack">
+      <span>Machine ID / Serial #</span>
+      <input class="field-input" name="machine_id" value="{{ machine_registration.machine_id }}" required />
+    </label>
+    {% if error %}
+    <div class="upload-status upload-error">{{ error }}</div>
+    {% endif %}
+    <button class="btn btn-start" type="submit">Create Owner Account</button>
+  </form>
+</section>
+{% endblock %}

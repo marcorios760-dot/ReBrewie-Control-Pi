@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Login - ReBrewie Control Pi{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <div class="page-header auth-header">
+    <div>
+      <h1>Remote Login</h1>
+      <p class="page-sub">Sign in before monitoring or controlling the registered Brewie machine.</p>
+    </div>
+  </div>
+
+  <form class="auth-form" method="post" action="/login">
+    <input type="hidden" name="next" value="{{ next or '/' }}" />
+    <label class="field-stack">
+      <span>Username</span>
+      <input class="field-input" name="username" autocomplete="username" required />
+    </label>
+    <label class="field-stack">
+      <span>Password</span>
+      <input class="field-input" name="password" type="password" autocomplete="current-password" required />
+    </label>
+    {% if error %}
+    <div class="upload-status upload-error">{{ error }}</div>
+    {% endif %}
+    <button class="btn btn-start" type="submit">Login</button>
+  </form>
+</section>
+{% endblock %}

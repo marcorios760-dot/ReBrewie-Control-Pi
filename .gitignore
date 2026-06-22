@@ -2,6 +2,9 @@ __pycache__/
 *.py[cod]
 *.pyo
 .env
+.blink-auth.json
+owner-registration.json
+machine-registration.json
 .venv/
 logs/
 docs/debug-sessions/

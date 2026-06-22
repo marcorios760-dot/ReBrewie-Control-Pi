@@ -21,6 +21,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
+from .auth import AuthMiddleware
 from .state import brew_state
 from .parser import parse_line
 from .transports.factory import get_transport
@@ -165,6 +166,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+app.add_middleware(AuthMiddleware)
 
 
 @app.exception_handler(TransportError)

@@ -40,6 +40,21 @@ class Settings(BaseSettings):
     local_bind: str = Field("0.0.0.0", alias="LOCAL_BIND")
     local_port: int = Field(8080, alias="LOCAL_PORT")
 
+    # Remote access / app login
+    auth_enabled: bool = Field(False, alias="AUTH_ENABLED")
+    auth_username: str = Field("admin", alias="AUTH_USERNAME")
+    auth_password_hash: str = Field("", alias="AUTH_PASSWORD_HASH")
+    auth_session_secret: str = Field("", alias="AUTH_SESSION_SECRET")
+    auth_session_hours: int = Field(12, alias="AUTH_SESSION_HOURS")
+    auth_cookie_secure: bool = Field(False, alias="AUTH_COOKIE_SECURE")
+    auth_allow_initial_registration: bool = Field(True, alias="AUTH_ALLOW_INITIAL_REGISTRATION")
+    auth_registration_file: str = Field("owner-registration.json", alias="AUTH_REGISTRATION_FILE")
+    auth_require_for_remote: bool = Field(True, alias="AUTH_REQUIRE_FOR_REMOTE")
+    auth_require_for_local: bool = Field(True, alias="AUTH_REQUIRE_FOR_LOCAL")
+    remote_public_hostname: str = Field("", alias="REMOTE_PUBLIC_HOSTNAME")
+    machine_id: str = Field("HN0251807090304", alias="MACHINE_ID")
+    machine_registry_file: str = Field("machine-registration.json", alias="MACHINE_REGISTRY_FILE")
+
     # Blink camera snapshot feed
     blink_enabled: bool = Field(False, alias="BLINK_ENABLED")
     blink_username: str = Field("", alias="BLINK_USERNAME")

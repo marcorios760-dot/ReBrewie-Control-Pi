@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}ReBrewie Control Pi{% endblock %}</title>
-  <link rel="stylesheet" href="/static/css/main.css?v=blink-balanced-125" />
+  <link rel="stylesheet" href="/static/css/main.css?v=first-run-registration-1" />
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -26,10 +26,24 @@
     <li><a href="/cleaning" class="{% if request.url.path == '/cleaning' %}active{% endif %}">Cleaning</a></li>
     <li><a href="/recipes" class="{% if '/recipes' in request.url.path %}active{% endif %}">Recipes</a></li>
     <li><a href="/developer" class="{% if request.url.path == '/developer' %}active{% endif %}">Developer</a></li>
+    <li><a href="/settings" class="{% if request.url.path == '/settings' %}active{% endif %}">Settings</a></li>
   </ul>
-  <div class="nav-status">
-    <span id="conn-dot" class="dot {% if state.connected %}dot-green{% else %}dot-red{% endif %}"></span>
-    <span id="conn-label">{{ "Connected" if state.connected else "Disconnected" }}</span>
+  <div class="nav-right">
+    <div class="nav-status">
+      <span id="conn-dot" class="dot {% if state.connected %}dot-green{% else %}dot-red{% endif %}"></span>
+      <span id="conn-label">{{ "Connected" if state.connected else "Disconnected" }}</span>
+    </div>
+    {% if remote_connected %}
+    <div class="nav-status remote-status">
+      <span class="dot dot-green"></span>
+      <span>Remote connection established.</span>
+    </div>
+    {% endif %}
+    {% if auth_enabled and current_user %}
+    <form class="logout-form" method="post" action="/logout">
+      <button class="logout-button" type="submit">Logout</button>
+    </form>
+    {% endif %}
   </div>
 </nav>
 
