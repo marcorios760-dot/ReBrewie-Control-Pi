@@ -24,7 +24,7 @@ if [[ -z "$PI_HOST" ]]; then
 Usage:
   PI_HOST=pi-ip-or-hostname [PI_USER=pi] scripts/deploy_to_pi.sh
 
-Do not type angle brackets. Use PI_HOST=192.168.1.113, not PI_HOST=<192.168.1.113>.
+Do not type angle brackets. Use PI_HOST=192.168.1.XXX, not PI_HOST=<192.168.1.XXX>.
 Run this from another computer with SSH access to the Pi. If you are already
 on the Pi, run: sudo scripts/update_local_pi.sh
   PI_HOST=<pi-ip-or-hostname> [PI_USER=pi] scripts/deploy_to_pi.sh
@@ -44,7 +44,7 @@ if [[ "$PI_HOST" == *'<'* || "$PI_HOST" == *'>'* ]]; then
   cat >&2 <<EOF
 Invalid PI_HOST: $PI_HOST
 Do not include angle brackets. Example:
-  PI_HOST=192.168.1.113 PI_USER=pi scripts/deploy_to_pi.sh
+  PI_HOST=192.168.1.XXX PI_USER=pi scripts/deploy_to_pi.sh
 EOF
   exit 2
 fi

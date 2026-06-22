@@ -29,7 +29,7 @@ function Quote-Bash {
 }
 
 if ($HostName -match "[<>]") {
-    throw "Do not include angle brackets in HostName. Use -HostName 192.168.1.113, not -HostName <192.168.1.113>."
+    throw "Do not include angle brackets in HostName. Use -HostName 192.168.1.XXX, not -HostName <192.168.1.XXX>."
 }
 
 Require-Command tar

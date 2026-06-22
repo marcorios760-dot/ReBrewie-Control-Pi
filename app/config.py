@@ -25,12 +25,12 @@ class Settings(BaseSettings):
     brewie_transport: str = Field("tcp", alias="BREWIE_TRANSPORT")
 
     # TCP
-    brewie_host: str = Field("192.168.1.132", alias="BREWIE_HOST")
+    brewie_host: str = Field("192.168.1.XXX", alias="BREWIE_HOST")
     brewie_port: int = Field(9000, alias="BREWIE_PORT")
     brewie_tcp_framing: bool = Field(True, alias="BREWIE_TCP_FRAMING")
 
     # HTTP bridge
-    brewie_http_base: str = Field("http://192.168.1.113:8080", alias="BREWIE_HTTP_BASE")
+    brewie_http_base: str = Field("http://192.168.1.XXX:8080", alias="BREWIE_HTTP_BASE")
 
     # Serial / USB
     brewie_serial_port: str = Field("/dev/ttyUSB0", alias="BREWIE_SERIAL_PORT")
@@ -52,7 +52,7 @@ class Settings(BaseSettings):
     auth_require_for_remote: bool = Field(True, alias="AUTH_REQUIRE_FOR_REMOTE")
     auth_require_for_local: bool = Field(True, alias="AUTH_REQUIRE_FOR_LOCAL")
     remote_public_hostname: str = Field("", alias="REMOTE_PUBLIC_HOSTNAME")
-    machine_id: str = Field("HN0251807090304", alias="MACHINE_ID")
+    machine_id: str = Field("HNXXXXXXXXXXXXXX", alias="MACHINE_ID")
     machine_registry_file: str = Field("machine-registration.json", alias="MACHINE_REGISTRY_FILE")
 
     # Blink camera snapshot feed

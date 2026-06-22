@@ -38,6 +38,10 @@ The app runs a FastAPI web server on the Raspberry Pi and communicates with the 
 
 The web interface is available from any browser on the same LAN at `http://<pi-ip>:8080` after installation.
 
+### Login Screen
+
+![Login Screen](docs/screenshots/login.jpeg)
+
 ### Dashboard
 
 ![Dashboard](docs/screenshots/dashboard.jpeg)
@@ -62,6 +66,9 @@ The web interface is available from any browser on the same LAN at `http://<pi-i
 
 ![Developer](docs/screenshots/developer.jpeg)
 
+### Settings
+
+![Settings](docs/screenshots/settings.jpeg)
 ## Tech Stack
 
 - Python 3.11+ / Python 3.13 on Raspberry Pi OS
@@ -99,7 +106,7 @@ contrib/brewie-machine/
 Deploy from Windows:
 
 ```powershell
-.\deploy-to-brewie.ps1 -Host 192.168.1.132 -User root -Password "your-password"
+.\deploy-to-brewie.ps1 -Host 192.168.1.XXX -User root -Password "your-password"
 ```
 
 Then review `contrib/brewie-machine/README.md` for probe and bridge options.
@@ -117,7 +124,7 @@ Important values:
 
 ```env
 BREWIE_TRANSPORT=tcp
-BREWIE_HOST=192.168.1.132
+BREWIE_HOST=192.168.1.XXX
 BREWIE_PORT=9000
 BREWIE_TCP_FRAMING=true
 LOCAL_BIND=0.0.0.0
@@ -211,10 +218,10 @@ If the dashboard still shows the raw full-size image, hard-refresh the browser s
 For remote access outside the local network, the recommended proof-of-concept setup is Cloudflare Tunnel in front of the existing Pi web app. The verified test route used:
 
 ```text
-https://rebrewie-pi.commogrunt.com -> http://192.168.1.113:8080
+https://rebrewie-pi.commogrunt.com -> http://192.168.1.XXX:8080
 ```
 
-When the tunnel connector runs on a Windows desktop or another LAN device, the public hostname service URL must point to the Pi's LAN address (`192.168.1.113:8080`). Use `localhost:8080` only if `cloudflared` is running on the same Raspberry Pi as this app.
+When the tunnel connector runs on a Windows desktop or another LAN device, the public hostname service URL must point to the Pi's LAN address (`192.168.1.XXX:8080`). Use `localhost:8080` only if `cloudflared` is running on the same Raspberry Pi as this app.
 
 Before exposing the app through any public hostname, enable app login in `.env`:
 
@@ -224,7 +231,7 @@ AUTH_ALLOW_INITIAL_REGISTRATION=true
 AUTH_REQUIRE_FOR_REMOTE=true
 AUTH_REQUIRE_FOR_LOCAL=true
 REMOTE_PUBLIC_HOSTNAME=rebrewie-pi.commogrunt.com
-MACHINE_ID=HN0251807090304
+MACHINE_ID=HNXXXXXXXXXXXXXX
 ```
 
 On first visit, the app redirects to `/register` when no owner account exists yet. That registration screen creates the owner username/password and binds the account to the Brewie machine ID/serial number. The registration is stored locally in `owner-registration.json`, which should stay private and should not be committed to GitHub.
@@ -299,10 +306,10 @@ Configuration is handled by environment variables, usually through `.env`.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `BREWIE_TRANSPORT` | `tcp` | `tcp`, `http`, `serial`, or `mock` |
-| `BREWIE_HOST` | `192.168.1.132` | Brewie machine IP |
+| `BREWIE_HOST` | `192.168.1.XXX` | Brewie machine IP |
 | `BREWIE_PORT` | `9000` | Brewie TCP bridge port |
 | `BREWIE_TCP_FRAMING` | `true` | Enable stock Brewie frame wrapping |
-| `BREWIE_HTTP_BASE` | `http://192.168.1.113:8080` | HTTP bridge base URL |
+| `BREWIE_HTTP_BASE` | `http://192.168.1.XXX:8080` | HTTP bridge base URL |
 | `BREWIE_SERIAL_PORT` | `/dev/ttyUSB0` | Serial device path |
 | `BREWIE_SERIAL_BAUD` | `115200` | Serial baud rate |
 | `LOCAL_BIND` | `0.0.0.0` | Web bind address |
@@ -318,7 +325,7 @@ Configuration is handled by environment variables, usually through `.env`.
 | `AUTH_REQUIRE_FOR_REMOTE` | `true` | Require login when accessed through `REMOTE_PUBLIC_HOSTNAME` |
 | `AUTH_REQUIRE_FOR_LOCAL` | `true` | Require login for local LAN/IP access |
 | `REMOTE_PUBLIC_HOSTNAME` | empty | Hostname that should show the remote connection indicator |
-| `MACHINE_ID` | `HN0251807090304` | Default registered Brewie machine ID/serial |
+| `MACHINE_ID` | `HNXXXXXXXXXXXXXX` | Default registered Brewie machine ID/serial |
 | `MACHINE_REGISTRY_FILE` | `machine-registration.json` | Writable machine registration file |
 | `BLINK_ENABLED` | `false` | Enable the optional Progress page camera panel |
 | `BLINK_USERNAME` | empty | Blink account username/email |
@@ -358,19 +365,19 @@ python3 scripts/check_pi_telemetry.py --url http://<pi-ip>:8080
 ### Windows to Raspberry Pi
 
 ```powershell
-.\deploy-to-pi.ps1 -HostName 192.168.1.113 -User pi -Password "your-password"
+.\deploy-to-pi.ps1 -HostName 192.168.1.XXX -User pi -Password "your-password"
 ```
 
 ### Linux/macOS to Raspberry Pi
 
 ```bash
-PI_HOST=192.168.1.113 PI_USER=pi APP_DIR=/opt/rebrewie-control-pi scripts/deploy_to_pi.sh
+PI_HOST=192.168.1.XXX PI_USER=pi APP_DIR=/opt/rebrewie-control-pi scripts/deploy_to_pi.sh
 ```
 
 ### Brewie helper tools
 
 ```powershell
-.\deploy-to-brewie.ps1 -Host 192.168.1.132 -User root -Password "your-password"
+.\deploy-to-brewie.ps1 -Host 192.168.1.XXX -User root -Password "your-password"
 ```
 
 ## Run Locally

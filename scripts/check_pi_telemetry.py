@@ -5,8 +5,8 @@ This script uses only the Python standard library so it can be run from the
 Raspberry Pi project folder without installing extra packages.
 
 Examples:
-  python3 scripts/check_pi_telemetry.py --base http://192.168.1.113:8080
-  python3 scripts/check_pi_telemetry.py --host 192.168.1.113 --port 8080
+  python3 scripts/check_pi_telemetry.py --base http://192.168.1.XXX:8080
+  python3 scripts/check_pi_telemetry.py --host 192.168.1.XXX --port 8080
 """
 from __future__ import annotations
 
@@ -50,9 +50,9 @@ def parse_v7_temperatures(raw: str) -> tuple[float | None, float | None]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Check ReBrewie Control Pi telemetry")
-    parser.add_argument("--host", default="192.168.1.113", help="Control Pi host/IP")
+    parser.add_argument("--host", default="192.168.1.XXX", help="Control Pi host/IP")
     parser.add_argument("--port", type=int, default=8080, help="Control Pi web port")
-    parser.add_argument("--base", help="Full Control Pi base URL, e.g. http://192.168.1.113:8080")
+    parser.add_argument("--base", help="Full Control Pi base URL, e.g. http://192.168.1.XXX:8080")
     parser.add_argument("--timeout", type=float, default=5.0)
     args = parser.parse_args()
 
@@ -108,7 +108,7 @@ def main() -> int:
     if not connected:
         print("- connected is not true; check service logs and Brewie network reachability.")
     if not transport_ok:
-        print("- transport_type is not tcp; run sudo scripts/configure_brewie_tcp.sh 192.168.1.132 9000.")
+        print("- transport_type is not tcp; run sudo scripts/configure_brewie_tcp.sh 192.168.1.XXX 9000.")
     if not has_v7:
         print("- no V7 telemetry found yet; wait a few seconds and refresh /api/log?n=200.")
     if has_v7 and not temps_ok:

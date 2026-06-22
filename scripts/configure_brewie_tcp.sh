@@ -2,13 +2,13 @@
 # Configure an installed Raspberry Pi service to use the stock Brewie TCP bridge.
 #
 # Example:
-#   sudo BREWIE_HOST=192.168.1.132 scripts/configure_brewie_tcp.sh
-#   sudo scripts/configure_brewie_tcp.sh 192.168.1.132 9000
+#   sudo BREWIE_HOST=192.168.1.XXX scripts/configure_brewie_tcp.sh
+#   sudo scripts/configure_brewie_tcp.sh 192.168.1.XXX 9000
 set -euo pipefail
 
 APP_DIR="${APP_DIR:-/opt/rebrewie-control-pi}"
 SERVICE_NAME="${SERVICE_NAME:-rebrewie-control-pi}"
-BREWIE_HOST="${1:-${BREWIE_HOST:-192.168.1.132}}"
+BREWIE_HOST="${1:-${BREWIE_HOST:-192.168.1.XXX}}"
 BREWIE_PORT="${2:-${BREWIE_PORT:-9000}}"
 ENV_FILE="${ENV_FILE:-$APP_DIR/.env}"
 
@@ -18,7 +18,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [[ -z "$BREWIE_HOST" || "$BREWIE_HOST" == *'<'* || "$BREWIE_HOST" == *'>'* ]]; then
-  echo "ERROR: Use a plain IP address, for example: 192.168.1.132" >&2
+  echo "ERROR: Use a plain IP address, for example: 192.168.1.XXX" >&2
   exit 2
 fi
 

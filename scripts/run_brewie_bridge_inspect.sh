@@ -4,7 +4,7 @@
 #   sh: /usr/libexec/sftp-server: not found
 set -euo pipefail
 
-BREWIE_HOST="${BREWIE_HOST:-${1:-192.168.1.132}}"
+BREWIE_HOST="${BREWIE_HOST:-${1:-192.168.1.XXX}}"
 BREWIE_USER="${BREWIE_USER:-root}"
 SSH_OPTS="${SSH_OPTS:-}"
 OUT_FILE="${OUT_FILE:-./brewie_bridge_inspect.txt}"
@@ -19,7 +19,7 @@ Copy/unzip the latest project folder onto the Pi or run the local updater from
 an updated checkout, then retry:
 
   cd ~/rebrewie-control-pi
-  BREWIE_HOST=192.168.1.132 BREWIE_USER=root scripts/run_brewie_bridge_inspect.sh
+  BREWIE_HOST=192.168.1.XXX BREWIE_USER=root scripts/run_brewie_bridge_inspect.sh
 EOF
   exit 2
 fi
@@ -27,7 +27,7 @@ fi
 if [[ "$BREWIE_HOST" == *'<'* || "$BREWIE_HOST" == *'>'* ]]; then
   cat >&2 <<EOF
 Invalid BREWIE_HOST: $BREWIE_HOST
-Do not include angle brackets. Use BREWIE_HOST=192.168.1.132.
+Do not include angle brackets. Use BREWIE_HOST=192.168.1.XXX.
 EOF
   exit 2
 fi

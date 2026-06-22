@@ -2,10 +2,10 @@
 """Quick stdlib-only TCP smoke test for the Brewie tty_tcp_bridge.
 
 Examples:
-  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.132 --port 9000
-  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.132 --port 9000 --cmd P80
-  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.132 --port 9000 --cmd STATUS --line-ending cr
-  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.132 --port 9000 --cmd STATUS --try-line-endings
+  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.XXX --port 9000
+  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.XXX --port 9000 --cmd P80
+  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.XXX --port 9000 --cmd STATUS --line-ending cr
+  python3 scripts/test_brewie_tcp_bridge.py --host 192.168.1.XXX --port 9000 --cmd STATUS --try-line-endings
 """
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ def send_once(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Test Brewie TCP bridge connectivity")
-    parser.add_argument("--host", default="192.168.1.132")
+    parser.add_argument("--host", default="192.168.1.XXX")
     parser.add_argument("--port", type=int, default=9000)
     parser.add_argument("--cmd", default="", help="optional command to send after connecting")
     parser.add_argument("--timeout", type=float, default=3.0)
